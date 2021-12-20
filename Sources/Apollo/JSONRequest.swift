@@ -108,7 +108,9 @@ open class JSONRequest<Operation: GraphQLOperation>: HTTPRequest<Operation> {
       }
     case .POST:
       do {
-        request.httpBody = try serializationFormat.serialize(value: body)
+        try autoreleasepool {
+           request.httpBody = try serializationFormat.serialize(value: body)
+        }
         request.httpMethod = GraphQLHTTPMethod.POST.rawValue
       } catch {
         throw GraphQLHTTPRequestError.serializedBodyMessageError
